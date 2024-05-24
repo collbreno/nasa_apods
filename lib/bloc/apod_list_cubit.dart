@@ -26,7 +26,7 @@ class ApodListCubit extends Cubit<ApodListState> {
         endDate: _currentDate!,
       );
       _currentDate = startDate;
-      emit(state.addResult(result));
+      emit(state.addResult(result.reversed.toList()));
     } on Exception catch (e) {
       emit(state.withError(e));
     }

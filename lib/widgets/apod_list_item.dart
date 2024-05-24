@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:nasa_apod/models/nasa_apod.dart';
 import 'package:nasa_apod/models/nasa_image.dart';
 import 'package:nasa_apod/models/nasa_video.dart';
+import 'package:nasa_apod/pages/apod_page.dart';
 
 class ApodListItem extends StatelessWidget {
   final NasaApod apod;
@@ -17,20 +18,29 @@ class ApodListItem extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: Material(
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ApodPage(apod),
+                ),
+              );
+            },
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: CachedNetworkImage(
-                    imageUrl: _getImageUrl(),
-                    fit: BoxFit.cover,
-                    placeholder: (context, url) => Container(
-                      color: Colors.grey,
+                Hero(
+                  tag: _getImageUrl(),
+                  child: AspectRatio(
+                    aspectRatio: 16 / 9,
+                    child: CachedNetworkImage(
+                      imageUrl: _getImageUrl(),
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Container(
+                        color: Colors.grey,
+                      ),
+                      errorWidget: (context, url, error) =>
+                          const Icon(Icons.error),
                     ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
                   ),
                 ),
                 Padding(
