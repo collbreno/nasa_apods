@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:nasa_apod/bloc/apod_list_cubit.dart';
-import 'package:nasa_apod/models/nasa_apod.dart';
-import 'package:nasa_apod/models/nasa_image.dart';
-import 'package:nasa_apod/models/nasa_video.dart';
+import 'package:nasa_apod/widgets/apod_list_item.dart';
 
 class ApodList extends StatefulWidget {
   final ApodListState state;
@@ -45,24 +42,8 @@ class _ApodListState extends State<ApodList> {
       itemCount: widget.state.items.length,
       itemBuilder: (context, index) {
         final apod = widget.state.items[index];
-        return ListTile(
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(_getImageUrl(apod)),
-          ),
-          title: Text(apod.title),
-          trailing: Text(DateFormat.yMMMd().format(apod.date)),
-        );
+        return ApodListItem(apod);
       },
     );
-  }
-
-  String _getImageUrl(NasaApod apod) {
-    if (apod is NasaImage) {
-      return apod.imageUrl;
-    } else if (apod is NasaVideo) {
-      return apod.thumbUrl;
-    } else {
-      throw AssertionError();
-    }
   }
 }
