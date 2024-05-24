@@ -20,6 +20,7 @@ class ApodListCubit extends Cubit<ApodListState> {
     _currentDate ??= DateTime.now();
     emit(state.loading());
     try {
+      _currentDate = _currentDate!.subtract(const Duration(days: 1));
       final startDate = _currentDate!.subtract(const Duration(days: 15));
       final result = await repository.getApods(
         startDate: startDate,

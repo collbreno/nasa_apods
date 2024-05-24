@@ -12,19 +12,19 @@ class ApodListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Material(
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ApodPage(apod),
-                ),
-              );
-            },
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ApodPage(apod),
+          ),
+        );
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Material(
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

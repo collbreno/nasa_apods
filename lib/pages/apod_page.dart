@@ -1,9 +1,9 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:nasa_apod/models/nasa_apod.dart';
 import 'package:nasa_apod/models/nasa_image.dart';
 import 'package:nasa_apod/models/nasa_video.dart';
+import 'package:nasa_apod/widgets/apod_media_content.dart';
 
 class ApodPage extends StatelessWidget {
   final NasaApod apod;
@@ -16,17 +16,7 @@ class ApodPage extends StatelessWidget {
       body: ListView(children: [
         Hero(
           tag: _getImageUrl(),
-          child: AspectRatio(
-            aspectRatio: 16 / 9,
-            child: CachedNetworkImage(
-              imageUrl: _getImageUrl(),
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(
-                color: Colors.grey,
-              ),
-              errorWidget: (context, url, error) => const Icon(Icons.error),
-            ),
-          ),
+          child: ApodMediaContent(apod),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
