@@ -1,0 +1,40 @@
+[
+	{
+		"date": "2023-11-04",
+		"explanation": "Last Wednesday the voyaging Lucy spacecraft encountered its first asteroid, 152830 Dinkinesh, and discovered the inner-main belt asteroid has a moon. From a distance of just over 400 kilometers, Lucy's Long-Range Reconnaissance Imager captured this close-up of the binary system during a flyby at 4.5 kilometer per second or around 10,000 miles per hour. A marvelous world, Dinkinesh itself is small, less than 800 meters (about 0.5 miles) across at its widest. Its satellite is seen from the spacecraft's perspective to emerge from behind the primary asteroid. The asteroid moon is estimated to be only about 220 meters wide.",
+		"hdurl": "https://apod.nasa.gov/apod/image/2311/dinkinesh-firstlook-llorri.png",
+		"media_type": "image",
+		"service_version": "v1",
+		"title": "Dinkinesh Moonrise",
+		"url": "https://apod.nasa.gov/apod/image/2311/dinkinesh-firstlook-llorri.png"
+	},
+	{
+		"copyright": "\nOle C. Salomonsen\n(Arctic Light Photo) \n",
+		"date": "2023-11-05",
+		"explanation": "It was Halloween and the sky looked like a creature. Exactly which creature, the astrophotographer was unsure (but possibly you can suggest one). Exactly what caused this  eerie apparition in 2013 was sure: one of the best auroral displays that year. This spectacular aurora had an unusually high degree of detail. Pictured here, the vivid green and purple  auroral colors are caused by high atmospheric oxygen and nitrogen reacting to a burst of incoming electrons.  Birch trees in Tromsø, Norway formed an also eerie foreground. Frequently, new photogenic auroras accompany new geomagnetic storms.   Almost Hyperspace: Random APOD Generator",
+		"hdurl": "https://apod.nasa.gov/apod/image/2311/CreatureAurora_Salomonsen_960.jpg",
+		"media_type": "image",
+		"service_version": "v1",
+		"title": "Creature Aurora Over Norway",
+		"url": "https://apod.nasa.gov/apod/image/2311/CreatureAurora_Salomonsen_960.jpg"
+	},
+	{
+		"copyright": "\nGiorgia Hofer\n",
+		"date": "2023-11-06",
+		"explanation": "What was that red glow on the horizon last night? Aurora. Our unusually active Sun produced a surface explosion a few days ago that sent out a burst of electrons, protons, and more massive charged nuclei. This coronal mass ejection (CME) triggered auroras here on Earth that are being reported unusually far south in Earth's northern hemisphere.  For example, this was the first time that the astrophotographer captured aurora from her home country of Italy. Additionally, many images from these auroras appear quite red in color.  In the featured image, the town of Comelico Superiore in the Italian Alps is visible in the foreground, with the central band of our Milky Way galaxy seen rising from the lower left. What draws the eye the most, though, is the bright red aurora on the far right. The featured image is a composite with the foreground and background images taken consecutively with the same camera and from the same location.   Aurora Album: Selected images sent in to APOD",
+		"hdurl": "https://apod.nasa.gov/apod/image/2311/RedAuroraItaly_Hofer_1200.jpg",
+		"media_type": "image",
+		"service_version": "v1",
+		"title": "Red Aurora over Italy",
+		"url": "https://apod.nasa.gov/apod/image/2311/RedAuroraItaly_Hofer_1080.jpg"
+	},
+	{
+		"date": "2023-11-07",
+		"explanation": "It moved across the surface of Mars -- what was it? A dust devil. Such spinning columns of rising air are heated by the warm surface and are also common in warm and dry areas on planet Earth.  Typically lasting only a few minutes, dust devils become visible as they pick up loose red-colored dust, leaving the darker and heavier sand beneath intact.  Dust devils not only look cool -- they can leave visible trails, and have been credited with unexpected cleanings of the surfaces of solar panels. The images in the featured AI-interpolated video were captured in early August by the Perseverance rover currently searching for signs of ancient life in Jezero Crater. The six-second time-lapse video encapsulates a real duration of just over one minute.  Visible in the distance, the spinning dust devil was estimated to be passing by at about 20 kilometers per hour and extend up about 2 kilometers high.   Your Sky Surprise: What picture did APOD feature on your birthday? (post 1995)",
+		"media_type": "video",
+		"service_version": "v1",
+		"thumbnail_url": "https://img.youtube.com/vi/xB3QIEkNJgs/0.jpg",
+		"title": "A Martian Dust Devil Spins By",
+		"url": "https://www.youtube.com/embed/xB3QIEkNJgs?rel=0"
+	}
+]
