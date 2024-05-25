@@ -37,13 +37,15 @@ class _ApodListState extends State<ApodList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      controller: _scrollController,
-      itemCount: widget.state.items.length,
-      itemBuilder: (context, index) {
-        final apod = widget.state.items[index];
-        return ApodListItem(apod);
-      },
+    return Scrollbar(
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: widget.state.filtered.length,
+        itemBuilder: (context, index) {
+          final apod = widget.state.filtered[index];
+          return ApodListItem(apod);
+        },
+      ),
     );
   }
 }

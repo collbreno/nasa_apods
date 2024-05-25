@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nasa_apod/bloc/apod_list_cubit.dart';
 import 'package:nasa_apod/repository/i_app_repository.dart';
 import 'package:nasa_apod/widgets/apod_list.dart';
+import 'package:nasa_apod/widgets/apod_search_bar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,9 +14,7 @@ class HomePage extends StatelessWidget {
       create: (context) =>
           ApodListCubit(context.read<IAppRepository>())..loadMore(),
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('Apods'),
-        ),
+        appBar: ApodSearchBar(),
         body: BlocBuilder<ApodListCubit, ApodListState>(
           builder: (context, state) {
             if (state.items.isNotEmpty) {
@@ -42,6 +41,11 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildList(ApodListState state) {
-    return ApodList(state: state);
+    return Stack(
+      children: [
+        ApodList(state: state),
+        if (state.isLoading) const LinearProgressIndicator(),
+      ],
+    );
   }
 }
