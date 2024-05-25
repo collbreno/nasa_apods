@@ -59,14 +59,33 @@ class _ApodSearchBarState extends State<ApodSearchBar> {
             onPressed: _openSearch,
             icon: const Icon(Icons.search),
           ),
-        IconButton(
-          // adding key to prevent Flutter from
-          // showing ripple effect on wrong button
-          key: GlobalKey(),
-          onPressed: () {},
-          icon: const Icon(Icons.calendar_today),
+        BlocBuilder<ApodListCubit, ApodListState>(
+          builder: (context, state) {
+            return IconButton(
+              // adding key to prevent Flutter from
+              // showing ripple effect on wrong button
+              key: GlobalKey(),
+              onPressed: () {
+                _showDateRange(state.dateRange);
+              },
+              icon: const Icon(Icons.calendar_today),
+            );
+          },
         ),
       ],
     );
+  }
+
+  void _showDateRange(DateTimeRange? initialDateRange) async {
+    final dateRange = await showDateRangePicker(
+      context: context,
+      initialDateRange: initialDateRange,
+      firstDate: DateTime(2000, 1, 1),
+      lastDate: DateTime(2024, 5, 30),
+    );
+
+    if (dateRange != null && mounted) {
+      context.read<ApodListCubit>().filter(dateRange);
+    }
   }
 }

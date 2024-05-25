@@ -16,7 +16,6 @@ class ApodListCubit extends Cubit<ApodListState> {
     if (state.isLoading || state.dateRange != null) {
       return;
     }
-    print('loading more...');
 
     _currentDate ??= DateTime.now();
     emit(state.loading(null));
@@ -28,7 +27,7 @@ class ApodListCubit extends Cubit<ApodListState> {
         endDate: _currentDate!,
       );
       _currentDate = startDate;
-      emit(state.addResult(result.reversed.toList()));
+      emit(state.addResult(result));
     } on Exception catch (e) {
       emit(state.withError(e));
     }
@@ -38,16 +37,21 @@ class ApodListCubit extends Cubit<ApodListState> {
     emit(state.withQuery(query));
   }
 
-  void filter(DateTimeRange dateRange) async {
-    emit(ApodListState.initialState().loading(dateRange));
-    try {
-      final result = await repository.getApods(
-        startDate: dateRange.start,
-        endDate: dateRange.end,
-      );
-      emit(state.addResult(result));
-    } on Exception catch (e) {
-      emit(state.withError(e));
+  void filter(DateTimeRange? dateRange) async {
+    if (dateRange == null) {
+      emit(ApodListState.initialState());
+      loadMore();
+    } else {
+      emit(ApodListState.initialState().loading(dateRange));
+      try {
+        final result = await repository.getApods(
+          startDate: dateRange.start,
+          endDate: dateRange.end,
+        );
+        emit(state.addResult(result));
+      } on Exception catch (e) {
+        emit(state.withError(e));
+      }
     }
   }
 }

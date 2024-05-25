@@ -5,21 +5,27 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "nasa-apod",
-            "request": "launch",
-            "type": "dart"
-        },
-        {
-            "name": "nasa-apod (profile mode)",
+            "name": "app",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
         },
         {
-            "name": "nasa-apod (release mode)",
+            "name": "app (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "profile",
+        },
+        {
+            "name": "app (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+        },
+        {
+            "name": "all tests",
+            "type": "dart",
+            "request": "launch",
+            "program": "test/",
         }
     ]
 }
