@@ -19,64 +19,74 @@ class HomePage extends StatelessWidget {
         appBar: const ApodSearchBar(),
         body: BlocBuilder<ApodListCubit, ApodListState>(
           builder: (context, state) {
-            if (state.items.isNotEmpty) {
-              return _buildList(state, context);
-            } else if (state.isLoading) {
-              return _buildLoading();
-            } else if (state.error != null) {
-              return _buildError(state.error!, context);
-            } else {
-              return _buildError(AssertionError(), context);
-            }
+            return Column(
+              children: [
+                if (state.dateRange != null)
+                  _buildDateRangeHeader(state.dateRange!),
+                Expanded(child: _buildContent(state)),
+              ],
+            );
           },
         ),
       ),
     );
   }
 
+  Widget _buildDateRangeHeader(DateTimeRange dateRange) {
+    return Container(
+      color: Colors.purple,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              '${dateRange.start.formatForUser()} '
+              '- ${dateRange.end.formatForUser()}',
+              textAlign: TextAlign.center,
+            ),
+          ),
+          Builder(builder: (context) {
+            return IconButton(
+              onPressed: () {
+                context.read<ApodListCubit>().loadMore();
+              },
+              icon: const Icon(Icons.close),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContent(ApodListState state) {
+    if (state.items.isNotEmpty) {
+      return _buildList(state);
+    } else if (state.isLoading) {
+      return _buildLoading();
+    } else if (state.error != null) {
+      return _buildError(state.error!);
+    } else {
+      return _buildError(AssertionError());
+    }
+  }
+
   Widget _buildLoading() {
     return const Center(child: CircularProgressIndicator());
   }
 
-  Widget _buildError(Object error, BuildContext context) {
-    return AppErrorWidget(
-      error,
-      onRetry: () => context.read<ApodListCubit>().loadMore(),
-    );
+  Widget _buildError(Object error) {
+    return Builder(builder: (context) {
+      return AppErrorWidget(
+        error,
+        onRetry: () => context.read<ApodListCubit>().refresh(),
+      );
+    });
   }
 
-  Widget _buildList(ApodListState state, BuildContext context) {
-    return Column(
+  Widget _buildList(ApodListState state) {
+    return Stack(
       children: [
-        if (state.dateRange != null)
-          Container(
-            color: Colors.purple,
-            child: Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    '${state.dateRange!.start.formatForUser()} '
-                    '- ${state.dateRange!.end.formatForUser()}',
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () {
-                    context.read<ApodListCubit>().loadMore();
-                  },
-                  icon: const Icon(Icons.close),
-                ),
-              ],
-            ),
-          ),
-        Expanded(
-          child: Stack(
-            children: [
-              ApodList(state: state),
-              if (state.isLoading) const LinearProgressIndicator(),
-            ],
-          ),
-        ),
+        ApodList(state: state),
+        if (state.isLoading) const LinearProgressIndicator(),
       ],
     );
   }

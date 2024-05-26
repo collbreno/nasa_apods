@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nasa_apod/bloc/apod_list_cubit.dart';
@@ -80,8 +81,8 @@ class _ApodSearchBarState extends State<ApodSearchBar> {
     final dateRange = await showDateRangePicker(
       context: context,
       initialDateRange: initialDateRange,
-      firstDate: DateTime(2000, 1, 1),
-      lastDate: DateTime(2024, 5, 30),
+      firstDate: DateTime(1995, 6, 16),
+      lastDate: clock.now().add(const Duration(days: 1)),
     );
 
     if (dateRange != null && mounted) {
