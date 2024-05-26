@@ -13,8 +13,10 @@ import 'apod_list_cubit_test.mocks.dart';
 @GenerateNiceMocks([MockSpec<IAppRepository>(as: #MockRepository)])
 void main() {
   DateTime march(int day) => DateTime(2024, 3, day);
-  final from03to07Range = DateTimeRange(start: march(3), end: march(7));
-  final from21to30Range = DateTimeRange(start: march(21), end: march(30));
+  final from03to07range = DateTimeRange(start: march(3), end: march(7));
+  final from21to31range = DateTimeRange(start: march(21), end: march(31));
+  final from21to30range = DateTimeRange(start: march(21), end: march(30));
+  final from11to30range = DateTimeRange(start: march(11), end: march(30));
   late DateTimeRange customRange;
 
   group('mocked repository', () {
@@ -53,7 +55,7 @@ void main() {
           infiniteScrollLastDay: null,
         ),
         ApodListState(
-          items: fix.fromRange(from21to30Range).reversed.toList(),
+          items: fix.fromRange(from21to30range).reversed.toList(),
           isLoading: false,
           error: null,
           query: '',
@@ -85,7 +87,7 @@ void main() {
           infiniteScrollLastDay: null,
         ),
         ApodListState(
-          items: fix.fromRange(from21to30Range).reversed.toList(),
+          items: fix.fromRange(from21to30range).reversed.toList(),
           isLoading: false,
           error: null,
           query: '',
@@ -93,7 +95,7 @@ void main() {
           infiniteScrollLastDay: march(21),
         ),
         ApodListState(
-          items: fix.fromRange(from21to30Range).reversed.toList(),
+          items: fix.fromRange(from21to30range).reversed.toList(),
           isLoading: true,
           error: null,
           query: '',
@@ -101,10 +103,7 @@ void main() {
           infiniteScrollLastDay: march(21),
         ),
         ApodListState(
-          items: fix
-              .fromRange(DateTimeRange(start: march(11), end: march(30)))
-              .reversed
-              .toList(),
+          items: fix.fromRange(from11to30range).reversed.toList(),
           isLoading: false,
           error: null,
           query: '',
@@ -112,10 +111,7 @@ void main() {
           infiniteScrollLastDay: march(11),
         ),
         ApodListState(
-          items: fix
-              .fromRange(DateTimeRange(start: march(11), end: march(30)))
-              .reversed
-              .toList(),
+          items: fix.fromRange(from11to30range).reversed.toList(),
           isLoading: true,
           error: null,
           query: '',
@@ -165,7 +161,7 @@ void main() {
             infiniteScrollLastDay: null,
           ),
           ApodListState(
-            items: fix.fromRange(from21to30Range).reversed.toList(),
+            items: fix.fromRange(from21to30range).reversed.toList(),
             isLoading: false,
             error: null,
             query: '',
@@ -173,7 +169,7 @@ void main() {
             infiniteScrollLastDay: march(21),
           ),
           ApodListState(
-            items: fix.fromRange(from21to30Range).reversed.toList(),
+            items: fix.fromRange(from21to30range).reversed.toList(),
             isLoading: false,
             error: null,
             query: 'galaxy',
@@ -300,7 +296,7 @@ void main() {
           Clock.fixed(march(30)),
           () async {
             await bloc.loadMore();
-            await bloc.filter(from03to07Range);
+            await bloc.filter(from03to07range);
           },
         ),
         skip: 2,
@@ -310,15 +306,15 @@ void main() {
             isLoading: true,
             error: null,
             query: '',
-            dateRange: from03to07Range,
+            dateRange: from03to07range,
             infiniteScrollLastDay: null,
           ),
           ApodListState(
-            items: fix.fromRange(from03to07Range).reversed.toList(),
+            items: fix.fromRange(from03to07range).reversed.toList(),
             isLoading: false,
             error: null,
             query: '',
-            dateRange: from03to07Range,
+            dateRange: from03to07range,
             infiniteScrollLastDay: null,
           ),
         ],
@@ -332,7 +328,7 @@ void main() {
           Clock.fixed(march(30)),
           () async {
             await bloc.loadMore();
-            await bloc.filter(from03to07Range);
+            await bloc.filter(from03to07range);
             await bloc.filter(DateTimeRange(start: march(12), end: march(15)));
           },
         ),
@@ -369,8 +365,8 @@ void main() {
           Clock.fixed(march(30)),
           () async {
             await bloc.loadMore();
-            await bloc.filter(from03to07Range);
-            await bloc.filter(from03to07Range);
+            await bloc.filter(from03to07range);
+            await bloc.filter(from03to07range);
           },
         ),
         skip: 4,
@@ -385,7 +381,7 @@ void main() {
           Clock.fixed(march(30)),
           () async {
             await bloc.loadMore();
-            await bloc.filter(from03to07Range);
+            await bloc.filter(from03to07range);
             await bloc.loadMore();
           },
         ),
@@ -400,7 +396,7 @@ void main() {
             infiniteScrollLastDay: null,
           ),
           ApodListState(
-            items: fix.fromRange(from21to30Range).reversed.toList(),
+            items: fix.fromRange(from21to30range).reversed.toList(),
             isLoading: false,
             error: null,
             query: '',
@@ -421,7 +417,7 @@ void main() {
           Clock.fixed(march(30)),
           () async {
             await bloc.loadMore();
-            await bloc.filter(from03to07Range);
+            await bloc.filter(from03to07range);
             bloc.search('galaxy');
           },
         ),
@@ -431,11 +427,11 @@ void main() {
         },
         expect: () => [
           ApodListState(
-            items: fix.fromRange(from03to07Range).reversed.toList(),
+            items: fix.fromRange(from03to07range).reversed.toList(),
             isLoading: false,
             error: null,
             query: 'galaxy',
-            dateRange: from03to07Range,
+            dateRange: from03to07range,
             infiniteScrollLastDay: null,
           ),
         ],
@@ -484,7 +480,7 @@ void main() {
           () async {
             await bloc.loadMore();
             bloc.search('galaxy');
-            await bloc.filter(from03to07Range);
+            await bloc.filter(from03to07range);
           },
         ),
         skip: 3,
@@ -500,15 +496,15 @@ void main() {
             isLoading: true,
             error: null,
             query: 'galaxy',
-            dateRange: from03to07Range,
+            dateRange: from03to07range,
             infiniteScrollLastDay: null,
           ),
           ApodListState(
-            items: fix.fromRange(from03to07Range).reversed.toList(),
+            items: fix.fromRange(from03to07range).reversed.toList(),
             isLoading: false,
             error: null,
             query: 'galaxy',
-            dateRange: from03to07Range,
+            dateRange: from03to07range,
             infiniteScrollLastDay: null,
           ),
         ],
@@ -567,7 +563,7 @@ void main() {
           Clock.fixed(march(30)),
           () async {
             await bloc.loadMore();
-            await bloc.filter(from03to07Range);
+            await bloc.filter(from03to07range);
             bloc.search('galaxy');
             await bloc.loadMore();
           },
@@ -586,10 +582,273 @@ void main() {
             infiniteScrollLastDay: null,
           ),
           ApodListState(
-            items: fix.fromRange(from21to30Range).reversed.toList(),
+            items: fix.fromRange(from21to30range).reversed.toList(),
             isLoading: false,
             error: null,
             query: 'galaxy',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+        ],
+      );
+    });
+
+    group('refreshing', () {
+      blocTest<ApodListCubit, ApodListState>(
+        'when [loadMore(), refresh()] is called, '
+        'emits [loadingEmpty, results, loading, results]',
+        build: () => ApodListCubit(repository),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            await bloc.refresh();
+          },
+        ),
+        skip: 2,
+        expect: () => [
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: false,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+        ],
+      );
+
+      blocTest<ApodListCubit, ApodListState>(
+        'when [loadMore(), loadMore(), refresh()] is called '
+        'emits [loadingEmpty, results, loading, results, loading, results] '
+        '(all results are preserved)',
+        build: () => ApodListCubit(repository),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            await bloc.loadMore();
+            await bloc.refresh();
+          },
+        ),
+        skip: 4,
+        expect: () => [
+          ApodListState(
+            items: fix.fromRange(from11to30range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(11),
+          ),
+          ApodListState(
+            items: fix.fromRange(from11to30range).reversed.toList(),
+            isLoading: false,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(11),
+          ),
+        ],
+      );
+
+      blocTest<ApodListCubit, ApodListState>(
+        'when [loadMore(), search(query), refresh()] is called, '
+        'emits [loadingEmpty, results, resultsWithQuery, loadingWithQuery, resultsWithQuery] '
+        '(query is preserved)',
+        build: () => ApodListCubit(repository),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            bloc.search('galaxy');
+            await bloc.refresh();
+          },
+        ),
+        verify: (bloc) {
+          expect(
+            bloc.state.filtered,
+            isEmpty,
+          );
+        },
+        skip: 3,
+        expect: () => [
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: 'galaxy',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: false,
+            error: null,
+            query: 'galaxy',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+        ],
+      );
+
+      blocTest<ApodListCubit, ApodListState>(
+        'when [loadMore(), loadMore(), search(query), refresh()] is called, '
+        'emits [loadingEmpty, results, resultsWithQuery, loadingWithQuery, resultsWithQuery] '
+        '(query and previous results are preserved)',
+        build: () => ApodListCubit(repository),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            await bloc.loadMore();
+            bloc.search('galaxy');
+            await bloc.refresh();
+          },
+        ),
+        verify: (bloc) {
+          expect(
+            bloc.state.filtered,
+            orderedEquals([
+              fix.fromDate(march(20)),
+              fix.fromDate(march(17)),
+              fix.fromDate(march(12)),
+            ]),
+          );
+        },
+        skip: 5,
+        expect: () => [
+          ApodListState(
+            items: fix.fromRange(from11to30range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: 'galaxy',
+            dateRange: null,
+            infiniteScrollLastDay: march(11),
+          ),
+          ApodListState(
+            items: fix.fromRange(from11to30range).reversed.toList(),
+            isLoading: false,
+            error: null,
+            query: 'galaxy',
+            dateRange: null,
+            infiniteScrollLastDay: march(11),
+          ),
+        ],
+      );
+
+      blocTest(
+        'when [loadMore(), filter(dates), refresh()] is called, '
+        'emits [loadingEmpty, results, loadingEmptyWithDates, resultsWithDates, loadingWithDates, resultsWithDates] '
+        '(dates are preserved)',
+        build: () => ApodListCubit(repository),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            await bloc.filter(from03to07range);
+            await bloc.refresh();
+          },
+        ),
+        skip: 4,
+        expect: () => [
+          ApodListState(
+            items: fix.fromRange(from03to07range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: from03to07range,
+            infiniteScrollLastDay: null,
+          ),
+          ApodListState(
+            items: fix.fromRange(from03to07range).reversed.toList(),
+            isLoading: false,
+            error: null,
+            query: '',
+            dateRange: from03to07range,
+            infiniteScrollLastDay: null,
+          ),
+        ],
+      );
+
+      blocTest(
+        'when [loadMore(), filter(dates), search(query), refresh()] is called, '
+        'emits [loadingEmpty, results, loadingEmptyWithDates, resultsWithDates, resultsWithDatesWithQuery, loadingWithDatesWithQuery, resultsWithDatesWithQuery] '
+        '(dates and query are preserved)',
+        build: () => ApodListCubit(repository),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            await bloc.filter(from03to07range);
+            bloc.search('galaxy');
+            await bloc.refresh();
+          },
+        ),
+        skip: 5,
+        verify: (bloc) {
+          expect(bloc.state.filtered, orderedEquals([fix.fromDate(march(6))]));
+        },
+        expect: () => [
+          ApodListState(
+            items: fix.fromRange(from03to07range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: 'galaxy',
+            dateRange: from03to07range,
+            infiniteScrollLastDay: null,
+          ),
+          ApodListState(
+            items: fix.fromRange(from03to07range).reversed.toList(),
+            isLoading: false,
+            error: null,
+            query: 'galaxy',
+            dateRange: from03to07range,
+            infiniteScrollLastDay: null,
+          ),
+        ],
+      );
+
+      blocTest<ApodListCubit, ApodListState>(
+        'when [loadMore(), refresh()] is called, '
+        'emits [loadingEmpty, results, loading, results] '
+        '(shows new days if date has changed)',
+        build: () => ApodListCubit(repository),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.refresh();
+            withClock(
+              Clock.fixed(march(31)),
+              () async {
+                await bloc.refresh();
+              },
+            );
+          },
+        ),
+        skip: 2,
+        expect: () => [
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to31range).reversed.toList(),
+            isLoading: false,
+            error: null,
+            query: '',
             dateRange: null,
             infiniteScrollLastDay: march(21),
           ),

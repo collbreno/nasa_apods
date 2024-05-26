@@ -12,6 +12,31 @@ class ApodListCubit extends Cubit<ApodListState> {
 
   ApodListCubit(this.repository) : super(ApodListState.initialState());
 
+  Future<void> refresh() async {
+    emit(state.loading(state.dateRange));
+    try {
+      final result = await repository.getApods(_getRefreshDateRange());
+      emit(state.withResult(result.reversed));
+    } on Exception catch (e) {
+      emit(state.withError(e));
+    }
+  }
+
+  DateTimeRange _getRefreshDateRange() {
+    if (state.dateRange != null) {
+      return state.dateRange!;
+    } else {
+      final today = clock.now();
+      return DateTimeRange(
+        start: state.infiniteScrollLastDay ??
+            today.subtract(
+              const Duration(days: 9),
+            ),
+        end: today,
+      );
+    }
+  }
+
   Future<void> loadMore() async {
     if (state.isLoading) {
       return;
@@ -23,17 +48,22 @@ class ApodListCubit extends Cubit<ApodListState> {
     emit(loadingState);
 
     try {
-      final endDate = state.infiniteScrollLastDay == null
-          ? clock.now()
-          : state.infiniteScrollLastDay!.subtract(const Duration(days: 1));
-      final startDate = endDate.subtract(const Duration(days: 9));
-      final result = await repository.getApods(
-        DateTimeRange(start: startDate, end: endDate),
-      );
-      emit(state.addResult(result.reversed));
+      final result = await repository.getApods(_getInfiniteScrollDateRange());
+      emit(state.withResult(state.items + result.reversed.toList()));
     } on Exception catch (e) {
       emit(state.withError(e));
     }
+  }
+
+  DateTimeRange _getInfiniteScrollDateRange() {
+    final endDate = state.infiniteScrollLastDay == null
+        ? clock.now()
+        : state.infiniteScrollLastDay!.subtract(const Duration(days: 1));
+
+    return DateTimeRange(
+      start: endDate.subtract(const Duration(days: 9)),
+      end: endDate,
+    );
   }
 
   void search(String query) {
@@ -50,7 +80,7 @@ class ApodListCubit extends Cubit<ApodListState> {
     );
     try {
       final result = await repository.getApods(dateRange);
-      emit(state.addResult(result.reversed));
+      emit(state.withResult(result.reversed));
     } on Exception catch (e) {
       emit(state.withError(e));
     }

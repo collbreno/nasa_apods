@@ -26,9 +26,9 @@ class ApodListState extends Equatable {
         infiniteScrollLastDay = null,
         error = null;
 
-  ApodListState addResult(Iterable<NasaApod> result) {
+  ApodListState withResult(Iterable<NasaApod> result) {
     return ApodListState(
-      items: items + result.toList(),
+      items: result.toList(),
       isLoading: false,
       error: null,
       query: query,
