@@ -1,16 +1,12 @@
 # nasa_apod
 
-A new Flutter project.
-
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Running project
+This project uses [flutter_dotenv](https://pub.dev/packages/flutter_dotenv) for storing API key securely. In order to run the app properly, you have to create a `.env` file in the root folder and define the API key to access NASA API:
+```properties
+# .env
+API_KEY=<YOUR_API_KEY_HERE>
+```
+Finally, you just need to run it like any Flutter project:
+```bash
+flutter run
+```
