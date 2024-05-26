@@ -29,11 +29,15 @@ class _ApodListState extends State<ApodList> {
   }
 
   void _loadMore() {
-    if (_scrollController.position.pixels >
-        _scrollController.position.maxScrollExtent * 0.75) {
+    if (widget.state.dateRange == null &&
+        _scrollController.position.pixels >
+            _scrollController.position.maxScrollExtent * 0.75) {
       context.read<ApodListCubit>().loadMore();
     }
   }
+
+  int get apodListLength => widget.state.filtered.length;
+  bool get showFooter => widget.state.dateRange == null;
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +46,34 @@ class _ApodListState extends State<ApodList> {
         onRefresh: () => context.read<ApodListCubit>().refresh(),
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: widget.state.filtered.length,
+          itemCount: showFooter ? apodListLength + 1 : apodListLength,
           itemBuilder: (context, index) {
+            if (index == apodListLength) {
+              return _buildListFooter();
+            }
+
             final apod = widget.state.filtered[index];
             return ApodListItem(apod);
           },
         ),
       ),
+    );
+  }
+
+  Widget _buildListFooter() {
+    return Padding(
+      padding: const EdgeInsets.all(8),
+      child: widget.state.isLoading
+          ? const Center(
+              child: SizedBox.square(
+                dimension: 32,
+                child: CircularProgressIndicator(),
+              ),
+            )
+          : TextButton(
+              onPressed: () => context.read<ApodListCubit>().loadMore(),
+              child: Text('Load more'),
+            ),
     );
   }
 }

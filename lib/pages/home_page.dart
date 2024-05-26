@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
 
   Widget _buildContent(ApodListState state) {
     if (state.items.isNotEmpty) {
-      return _buildList(state);
+      return ApodList(state: state);
     } else if (state.isLoading) {
       return _buildLoading();
     } else if (state.error != null) {
@@ -80,14 +80,5 @@ class HomePage extends StatelessWidget {
         onRetry: () => context.read<ApodListCubit>().refresh(),
       );
     });
-  }
-
-  Widget _buildList(ApodListState state) {
-    return Stack(
-      children: [
-        ApodList(state: state),
-        if (state.isLoading) const LinearProgressIndicator(),
-      ],
-    );
   }
 }

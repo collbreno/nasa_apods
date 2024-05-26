@@ -77,6 +77,8 @@ class ApodListState extends Equatable {
               (apod) => apod.title.toLowerCase().contains(query.toLowerCase()))
           .toList();
 
+  bool get hasError => error != null;
+
   @override
   List<Object?> get props => [
         items,
