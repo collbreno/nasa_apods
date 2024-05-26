@@ -13,11 +13,15 @@ class ApodListCubit extends Cubit<ApodListState> {
   ApodListCubit(this.repository) : super(ApodListState.initialState());
 
   Future<void> loadMore() async {
-    if (state.isLoading || state.dateRange != null) {
+    if (state.isLoading) {
       return;
     }
 
-    emit(state.loading(null));
+    final loadingState = state.dateRange == null
+        ? state.loading(null)
+        : ApodListState.initialState().withQuery(state.query).loading(null);
+    emit(loadingState);
+
     try {
       final endDate = state.infiniteScrollLastDay == null
           ? clock.now()
@@ -36,18 +40,19 @@ class ApodListCubit extends Cubit<ApodListState> {
     emit(state.withQuery(query));
   }
 
-  void filter(DateTimeRange? dateRange) async {
-    if (dateRange == null) {
-      emit(ApodListState.initialState());
-      loadMore();
-    } else {
-      emit(ApodListState.initialState().loading(dateRange));
-      try {
-        final result = await repository.getApods(dateRange);
-        emit(state.addResult(result.reversed));
-      } on Exception catch (e) {
-        emit(state.withError(e));
-      }
+  Future<void> filter(DateTimeRange dateRange) async {
+    if (dateRange == state.dateRange) {
+      return;
+    }
+
+    emit(
+      ApodListState.initialState().withQuery(state.query).loading(dateRange),
+    );
+    try {
+      final result = await repository.getApods(dateRange);
+      emit(state.addResult(result.reversed));
+    } on Exception catch (e) {
+      emit(state.withError(e));
     }
   }
 }

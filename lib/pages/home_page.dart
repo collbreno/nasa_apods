@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
   Widget _buildError(Object error, BuildContext context) {
     return AppErrorWidget(
       error,
-      onRetry: () => context.read<ApodListCubit>().filter(null),
+      onRetry: () => context.read<ApodListCubit>().loadMore(),
     );
   }
 
@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
                 ),
                 IconButton(
                   onPressed: () {
-                    context.read<ApodListCubit>().filter(null);
+                    context.read<ApodListCubit>().loadMore();
                   },
                   icon: const Icon(Icons.close),
                 ),

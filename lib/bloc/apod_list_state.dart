@@ -62,7 +62,7 @@ class ApodListState extends Equatable {
   ApodListState withQuery(String query) {
     return ApodListState(
       items: items,
-      isLoading: false,
+      isLoading: isLoading,
       error: error,
       query: query,
       dateRange: dateRange,
