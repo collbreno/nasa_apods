@@ -15,10 +15,12 @@ class ApodSearchBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _ApodSearchBarState extends State<ApodSearchBar> {
   late bool _isSearching;
+  late FocusNode _searchFocus;
 
   @override
   void initState() {
     _isSearching = false;
+    _searchFocus = FocusNode();
     super.initState();
   }
 
@@ -26,6 +28,11 @@ class _ApodSearchBarState extends State<ApodSearchBar> {
     setState(() {
       _isSearching = true;
     });
+    // workaroung to get it working
+    Future.delayed(
+      const Duration(milliseconds: 50),
+      () => FocusScope.of(context).requestFocus(_searchFocus),
+    );
   }
 
   void _closeSearch() {
@@ -44,6 +51,7 @@ class _ApodSearchBarState extends State<ApodSearchBar> {
     return AppBar(
       title: _isSearching
           ? TextField(
+              focusNode: _searchFocus,
               onChanged: _search,
               decoration: InputDecoration(
                   hintText: 'Search',
@@ -78,6 +86,7 @@ class _ApodSearchBarState extends State<ApodSearchBar> {
   }
 
   void _showDateRange(DateTimeRange? initialDateRange) async {
+    FocusScope.of(context).requestFocus(FocusNode());
     final dateRange = await showDateRangePicker(
       context: context,
       initialDateRange: initialDateRange,
