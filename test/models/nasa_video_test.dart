@@ -6,7 +6,7 @@ import '../test_utils/file_utils.dart';
 
 void main() {
   test('nasa video with copyright', () async {
-    final json = await FileUtils.loadFile('test/assets/video_example.json');
+    final json = await FileUtils.loadFile('video_example.json');
     final apod = NasaApod.fromJson(json);
 
     expect(apod, isA<NasaVideo>());
@@ -22,8 +22,7 @@ void main() {
   });
 
   test('nasa video without copyright', () async {
-    final json =
-        await FileUtils.loadFile('test/assets/video_no_copr_example.json');
+    final json = await FileUtils.loadFile('video_no_copr_example.json');
     final video = NasaApod.fromJson(json);
 
     expect(video, isA<NasaVideo>());

@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http_mock_adapter/http_mock_adapter.dart';
 import 'package:nasa_apod/exceptions/api_exception.dart';
@@ -23,28 +24,30 @@ void main() {
 
     test('simple list', () async {
       final json = await FileUtils.loadFile(
-        'test/assets/apod_list_example.json',
+        'apod_list_example.json',
       );
       dioAdapter.onGet('https://api.nasa.gov/planetary/apod', (server) {
         server.reply(200, json);
       });
 
       final result = await repository.getApods(
-        startDate: DateTime.now(),
-        endDate: DateTime.now(),
+        DateTimeRange(
+          start: DateTime.now(),
+          end: DateTime.now(),
+        ),
       );
 
       expect(result, isA<List<NasaApod>>());
       expect(result, hasLength(4));
-      expect(result[0], isA<NasaVideo>());
+      expect(result[0], isA<NasaImage>());
       expect(result[1], isA<NasaImage>());
       expect(result[2], isA<NasaImage>());
-      expect(result[3], isA<NasaImage>());
+      expect(result[3], isA<NasaVideo>());
     });
 
     test('invalid date range', () async {
       final json = await FileUtils.loadFile(
-        'test/assets/apod_list_invalid_date_range.json',
+        'apod_list_invalid_date_range.json',
       );
       dioAdapter.onGet('https://api.nasa.gov/planetary/apod', (server) {
         server.reply(400, json);
@@ -52,8 +55,10 @@ void main() {
 
       expect(
         () async => await repository.getApods(
-          startDate: DateTime.now(),
-          endDate: DateTime.now(),
+          DateTimeRange(
+            start: DateTime.now(),
+            end: DateTime.now(),
+          ),
         ),
         throwsA(isA<ApiException>()),
       );
@@ -69,8 +74,10 @@ void main() {
 
     test('simple list', () async {
       final list = await repository.getApods(
-        startDate: DateTime(2024, 5, 10),
-        endDate: DateTime(2024, 5, 12),
+        DateTimeRange(
+          start: DateTime(2024, 5, 10),
+          end: DateTime(2024, 5, 12),
+        ),
       );
 
       expect(list, hasLength(3));
@@ -78,17 +85,19 @@ void main() {
       expect(
           list.map((e) => e.date),
           orderedEquals([
-            DateTime(2024, 5, 12),
-            DateTime(2024, 5, 11),
             DateTime(2024, 5, 10),
+            DateTime(2024, 5, 11),
+            DateTime(2024, 5, 12),
           ]));
     });
 
     test('invalid date range', () async {
       expect(
         () async => await repository.getApods(
-          startDate: DateTime(1900, 1, 1),
-          endDate: DateTime.now(),
+          DateTimeRange(
+            start: DateTime(1900, 1, 1),
+            end: DateTime.now(),
+          ),
         ),
         throwsA(isA<ApiException>()),
       );

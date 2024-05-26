@@ -1,13 +1,15 @@
+import 'package:equatable/equatable.dart';
 import 'package:nasa_apod/models/nasa_image.dart';
 import 'package:nasa_apod/models/nasa_video.dart';
+import 'package:nasa_apod/utils/date_utils.dart';
 
-abstract class NasaApod {
+abstract class NasaApod extends Equatable {
   final String title;
   final DateTime date;
   final String explanation;
   final String? copyright;
 
-  NasaApod({
+  const NasaApod({
     required this.title,
     required this.date,
     required this.explanation,
@@ -22,5 +24,10 @@ abstract class NasaApod {
       'video' => NasaVideo.fromJson(json),
       _ => throw AssertionError('$mediaType not supported'),
     };
+  }
+
+  @override
+  String toString() {
+    return '$runtimeType: ${date.formatForApi()}';
   }
 }

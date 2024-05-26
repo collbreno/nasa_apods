@@ -1,3 +1,4 @@
+import 'package:clock/clock.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,26 +9,24 @@ part 'apod_list_state.dart';
 
 class ApodListCubit extends Cubit<ApodListState> {
   final IAppRepository repository;
-  DateTime? _currentDate;
 
   ApodListCubit(this.repository) : super(ApodListState.initialState());
 
-  void loadMore() async {
+  Future<void> loadMore() async {
     if (state.isLoading || state.dateRange != null) {
       return;
     }
 
-    _currentDate ??= DateTime.now();
     emit(state.loading(null));
     try {
-      _currentDate = _currentDate!.subtract(const Duration(days: 1));
-      final startDate = _currentDate!.subtract(const Duration(days: 15));
+      final endDate = state.infiniteScrollLastDay == null
+          ? clock.now()
+          : state.infiniteScrollLastDay!.subtract(const Duration(days: 1));
+      final startDate = endDate.subtract(const Duration(days: 9));
       final result = await repository.getApods(
-        startDate: startDate,
-        endDate: _currentDate!,
+        DateTimeRange(start: startDate, end: endDate),
       );
-      _currentDate = startDate;
-      emit(state.addResult(result));
+      emit(state.addResult(result.reversed));
     } on Exception catch (e) {
       emit(state.withError(e));
     }
@@ -44,11 +43,8 @@ class ApodListCubit extends Cubit<ApodListState> {
     } else {
       emit(ApodListState.initialState().loading(dateRange));
       try {
-        final result = await repository.getApods(
-          startDate: dateRange.start,
-          endDate: dateRange.end,
-        );
-        emit(state.addResult(result));
+        final result = await repository.getApods(dateRange);
+        emit(state.addResult(result.reversed));
       } on Exception catch (e) {
         emit(state.withError(e));
       }

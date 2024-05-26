@@ -13,4 +13,14 @@ class NasaImage extends NasaApod {
           date: DateTime.parse(json['date']),
           explanation: json['explanation'],
         );
+
+  @override
+  List<Object?> get props => [
+        hdUrl,
+        imageUrl,
+        copyright,
+        title,
+        date,
+        explanation,
+      ];
 }

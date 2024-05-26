@@ -13,4 +13,14 @@ class NasaVideo extends NasaApod {
           date: DateTime.parse(json['date']),
           explanation: json['explanation'],
         );
+
+  @override
+  List<Object?> get props => [
+        videoUrl,
+        thumbUrl,
+        copyright,
+        title,
+        date,
+        explanation,
+      ];
 }
