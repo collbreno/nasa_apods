@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:nasa_apod/bloc/apod_list_cubit.dart';
+import 'package:nasa_apod/exceptions/api_exception.dart';
 import 'package:nasa_apod/repository/i_app_repository.dart';
 
 import '../fixtures/apod_list_fixture.dart';
@@ -22,6 +23,7 @@ void main() {
   final from12to15range = DateTimeRange(start: march(12), end: march(15));
   final from01to30range = DateTimeRange(start: march(01), end: march(30));
   final from01to05range = DateTimeRange(start: march(01), end: march(05));
+  final from01to10range = DateTimeRange(start: march(01), end: march(10));
 
   group('mocked repository', () {
     late MockRepository repository;
@@ -680,7 +682,7 @@ void main() {
 
       blocTest<ApodListCubit, ApodListState>(
         'when [loadMore(), loadMore(), search(query), refresh()] is called, '
-        'emits [loadingEmpty, results, resultsWithQuery, loadingWithQuery, resultsWithQuery] '
+        'emits [loadingEmpty, results, loading, results, resultsWithQuery, loadingWithQuery, resultsWithQuery] '
         '(only query is preserved)',
         build: () => ApodListCubit(repository),
         act: (bloc) => withClock(
@@ -829,6 +831,309 @@ void main() {
             query: '',
             dateRange: null,
             infiniteScrollLastDay: march(22),
+          ),
+        ],
+      );
+    });
+
+    group('testing errors', () {
+      late ApiException exception;
+
+      setUp(() {
+        exception = ApiException('mocked error');
+      });
+
+      blocTest<ApodListCubit, ApodListState>(
+        'when [loadMore()] is called, '
+        'emits [loadingEmpty, errorEmpty] '
+        '(when repository throws error)',
+        build: () => ApodListCubit(repository),
+        setUp: () => when(repository.getApods(from21to30range))
+            .thenAnswer((_) => throw exception),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+          },
+        ),
+        expect: () => [
+          const ApodListState(
+            items: [],
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: null,
+          ),
+          ApodListState(
+            items: const [],
+            isLoading: false,
+            error: exception,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: null,
+          ),
+        ],
+      );
+
+      blocTest<ApodListCubit, ApodListState>(
+        'when [loadMore(), loadMore()] is called '
+        'emits [loadingEmpty, results, loading, error] '
+        '(when repository throws error in second loadMore())',
+        build: () => ApodListCubit(repository),
+        setUp: () => when(repository.getApods(from11to20range))
+            .thenAnswer((_) => throw exception),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            await bloc.loadMore();
+          },
+        ),
+        expect: () => [
+          const ApodListState(
+            items: [],
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: null,
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: false,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: false,
+            error: exception,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+        ],
+      );
+
+      blocTest<ApodListCubit, ApodListState>(
+        'when [loadMore(), loadMore(), search(query)] is called '
+        'emits [loadingEmpty, results, loading, error, errorWithQuery] '
+        '(when repository throws error in second loadMore()) '
+        '(error is preserved)',
+        build: () => ApodListCubit(repository),
+        setUp: () => when(repository.getApods(from11to20range))
+            .thenAnswer((_) => throw exception),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            await bloc.loadMore();
+            bloc.search('galaxy');
+          },
+        ),
+        expect: () => [
+          const ApodListState(
+            items: [],
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: null,
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: false,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: false,
+            error: exception,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: false,
+            error: exception,
+            query: 'galaxy',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+        ],
+      );
+
+      blocTest(
+        'when [loadMore(), filter(dates)] is called, '
+        'emits [loadingEmpty, results, loadingEmptyWithDates, errorWithDates] '
+        '(when repository throws error in filter(dates))',
+        build: () => ApodListCubit(repository),
+        setUp: () => when(repository.getApods(from03to07range))
+            .thenAnswer((_) => throw exception),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            await bloc.filter(from03to07range);
+          },
+        ),
+        skip: 2,
+        expect: () => [
+          ApodListState(
+            items: const [],
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: from03to07range,
+            infiniteScrollLastDay: null,
+          ),
+          ApodListState(
+            items: const [],
+            isLoading: false,
+            error: exception,
+            query: '',
+            dateRange: from03to07range,
+            infiniteScrollLastDay: null,
+          ),
+        ],
+      );
+
+      blocTest<ApodListCubit, ApodListState>(
+        'when [loadMore(), refresh()] is called, '
+        'emits [loadingEmpty, results, loading, results] '
+        '(when repository throws error in refresh())',
+        build: () => ApodListCubit(repository),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            when(repository.getApods(from21to30range))
+                .thenAnswer((_) => throw exception);
+            await bloc.refresh();
+          },
+        ),
+        skip: 2,
+        expect: () => [
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+          ApodListState(
+            items: fix.fromRange(from21to30range).reversed.toList(),
+            isLoading: false,
+            error: exception,
+            query: '',
+            dateRange: null,
+            infiniteScrollLastDay: march(21),
+          ),
+        ],
+      );
+
+      blocTest(
+        'when [loadMore(), filter(dates), refresh()] is called, '
+        'emits [loadingEmpty, results, loadingEmptyWithDates, resultsWithDates, loadingWithDates, errorWithDates] '
+        '(when repository throws error in refresh)',
+        build: () => ApodListCubit(repository),
+        act: (bloc) => withClock(
+          Clock.fixed(march(30)),
+          () async {
+            await bloc.loadMore();
+            await bloc.filter(from03to07range);
+            when(repository.getApods(from03to07range))
+                .thenAnswer((_) => throw exception);
+            await bloc.refresh();
+          },
+        ),
+        skip: 4,
+        expect: () => [
+          ApodListState(
+            items: fix.fromRange(from03to07range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: '',
+            dateRange: from03to07range,
+            infiniteScrollLastDay: null,
+          ),
+          ApodListState(
+            items: fix.fromRange(from03to07range).reversed.toList(),
+            isLoading: false,
+            error: exception,
+            query: '',
+            dateRange: from03to07range,
+            infiniteScrollLastDay: null,
+          ),
+        ],
+      );
+
+      blocTest<ApodListCubit, ApodListState>(
+        'when [loadMore(), search(query), loadMore()] is called, '
+        'emits [loadingEmpty, results, resultsWithQuery, loadingWithQuery, errorWithQuery] '
+        '(when repository throws error in second loadMore())',
+        build: () => ApodListCubit(repository),
+        setUp: () => when(repository.getApods(from01to10range))
+            .thenAnswer((_) => throw exception),
+        act: (bloc) => withClock(
+          Clock.fixed(march(20)),
+          () async {
+            await bloc.loadMore();
+            bloc.search('galaxy');
+            await bloc.loadMore();
+          },
+        ),
+        verify: (bloc) {
+          expect(
+            bloc.state.filtered,
+            orderedEquals([
+              fix.fromDate(march(20)),
+              fix.fromDate(march(17)),
+              fix.fromDate(march(12)),
+            ]),
+          );
+        },
+        skip: 3,
+        expect: () => [
+          ApodListState(
+            items: fix.fromRange(from11to20range).reversed.toList(),
+            isLoading: true,
+            error: null,
+            query: 'galaxy',
+            dateRange: null,
+            infiniteScrollLastDay: march(11),
+          ),
+          ApodListState(
+            items: fix.fromRange(from11to20range).reversed.toList(),
+            isLoading: false,
+            error: exception,
+            query: 'galaxy',
+            dateRange: null,
+            infiniteScrollLastDay: march(11),
           ),
         ],
       );
