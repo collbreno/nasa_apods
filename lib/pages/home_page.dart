@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nasa_apod/bloc/apod_list_cubit.dart';
 import 'package:nasa_apod/repository/i_app_repository.dart';
 import 'package:nasa_apod/utils/date_utils.dart';
+import 'package:nasa_apod/utils/exception_utils.dart';
 import 'package:nasa_apod/widgets/apod_list.dart';
 import 'package:nasa_apod/widgets/apod_search_bar.dart';
 import 'package:nasa_apod/widgets/app_error_widget.dart';
@@ -41,7 +42,7 @@ class HomePage extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            state.error.toString(),
+            ExceptionUtils.getExceptionMessageText(state.error!),
             style: TextStyle(
               color: Theme.of(context).colorScheme.onError,
             ),

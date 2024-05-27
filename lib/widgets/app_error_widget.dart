@@ -1,6 +1,5 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:nasa_apod/exceptions/api_exception.dart';
+import 'package:nasa_apod/utils/exception_utils.dart';
 
 class AppErrorWidget extends StatelessWidget {
   final Object error;
@@ -22,7 +21,7 @@ class AppErrorWidget extends StatelessWidget {
           const Icon(Icons.warning),
           const SizedBox(height: 8),
           Text(
-            _getText(),
+            ExceptionUtils.getExceptionMessageText(error),
             textAlign: TextAlign.center,
           ),
           if (onRetry != null)
@@ -37,19 +36,5 @@ class AppErrorWidget extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  String _getText() {
-    if (error is DioException) {
-      return (error as DioException).message ?? error.toString();
-    }
-    if (error is ApiException) {
-      return (error as ApiException).msg;
-    }
-    if (error is Exception) {
-      return error.toString();
-    } else {
-      return 'Something got wrong';
-    }
   }
 }
