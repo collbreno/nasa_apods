@@ -28,10 +28,9 @@ class ApodListCubit extends Cubit<ApodListState> {
     } else {
       final today = clock.now();
       return DateTimeRange(
-        start: state.infiniteScrollLastDay ??
-            today.subtract(
-              const Duration(days: 9),
-            ),
+        start: today.subtract(
+          const Duration(days: 9),
+        ),
         end: today,
       );
     }
