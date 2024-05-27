@@ -91,7 +91,7 @@ class _ApodSearchBarState extends State<ApodSearchBar> {
       context: context,
       initialDateRange: initialDateRange,
       firstDate: DateTime(1995, 6, 16),
-      lastDate: clock.now().add(const Duration(days: 1)),
+      lastDate: clock.now(),
     );
 
     if (dateRange != null && mounted) {
