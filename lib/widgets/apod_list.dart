@@ -30,6 +30,7 @@ class _ApodListState extends State<ApodList> {
 
   void _loadMore() {
     if (widget.state.dateRange == null &&
+        !widget.state.hasError &&
         _scrollController.position.pixels >
             _scrollController.position.maxScrollExtent * 0.75) {
       context.read<ApodListCubit>().loadMore();
@@ -72,7 +73,7 @@ class _ApodListState extends State<ApodList> {
             )
           : TextButton(
               onPressed: () => context.read<ApodListCubit>().loadMore(),
-              child: Text('Load more'),
+              child: const Text('Load more'),
             ),
     );
   }

@@ -17,19 +17,39 @@ class HomePage extends StatelessWidget {
           ApodListCubit(context.read<IAppRepository>())..loadMore(),
       child: Scaffold(
         appBar: const ApodSearchBar(),
-        body: BlocBuilder<ApodListCubit, ApodListState>(
-          builder: (context, state) {
-            return Column(
-              children: [
-                if (state.dateRange != null)
-                  _buildDateRangeHeader(state.dateRange!),
-                Expanded(child: _buildContent(state)),
-              ],
-            );
-          },
+        body: BlocListener<ApodListCubit, ApodListState>(
+          listenWhen: (previous, current) => previous.error != current.error,
+          listener: _displayErrorSnackBar,
+          child: BlocBuilder<ApodListCubit, ApodListState>(
+            builder: (context, state) {
+              return Column(
+                children: [
+                  if (state.dateRange != null)
+                    _buildDateRangeHeader(state.dateRange!),
+                  Expanded(child: _buildContent(state)),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
+  }
+
+  void _displayErrorSnackBar(BuildContext context, ApodListState state) {
+    if (state.error != null && state.filtered.isNotEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            state.error.toString(),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onError,
+            ),
+          ),
+          backgroundColor: Theme.of(context).colorScheme.error,
+        ),
+      );
+    }
   }
 
   Widget _buildDateRangeHeader(DateTimeRange dateRange) {
