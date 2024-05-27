@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:nasa_apod/models/nasa_apod.dart';
 import 'package:nasa_apod/models/nasa_image.dart';
 import 'package:nasa_apod/models/nasa_video.dart';
-import 'package:nasa_apod/widgets/apod_media_content.dart';
+import 'package:nasa_apod/widgets/apod_page_media.dart';
 
 class ApodPage extends StatelessWidget {
   final NasaApod apod;
@@ -16,7 +16,7 @@ class ApodPage extends StatelessWidget {
       body: ListView(children: [
         Hero(
           tag: _getImageUrl(),
-          child: ApodMediaContent(apod),
+          child: ApodPageMedia(apod),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
