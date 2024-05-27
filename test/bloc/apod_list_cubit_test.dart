@@ -19,7 +19,9 @@ void main() {
   final from11to30range = DateTimeRange(start: march(11), end: march(30));
   final from01to20range = DateTimeRange(start: march(1), end: march(20));
   final from11to20range = DateTimeRange(start: march(11), end: march(20));
-  late DateTimeRange customRange;
+  final from12to15range = DateTimeRange(start: march(12), end: march(15));
+  final from01to30range = DateTimeRange(start: march(01), end: march(30));
+  final from01to05range = DateTimeRange(start: march(01), end: march(05));
 
   group('mocked repository', () {
     late MockRepository repository;
@@ -121,10 +123,7 @@ void main() {
           infiniteScrollLastDay: march(11),
         ),
         ApodListState(
-          items: fix
-              .fromRange(DateTimeRange(start: march(1), end: march(30)))
-              .reversed
-              .toList(),
+          items: fix.fromRange(from01to30range).reversed.toList(),
           isLoading: false,
           error: null,
           query: '',
@@ -213,10 +212,7 @@ void main() {
             infiniteScrollLastDay: null,
           ),
           ApodListState(
-            items: fix
-                .fromRange(DateTimeRange(start: march(11), end: march(20)))
-                .reversed
-                .toList(),
+            items: fix.fromRange(from11to20range).reversed.toList(),
             isLoading: false,
             error: null,
             query: '',
@@ -224,10 +220,7 @@ void main() {
             infiniteScrollLastDay: march(11),
           ),
           ApodListState(
-            items: fix
-                .fromRange(DateTimeRange(start: march(11), end: march(20)))
-                .reversed
-                .toList(),
+            items: fix.fromRange(from11to20range).reversed.toList(),
             isLoading: false,
             error: null,
             query: 'galaxy',
@@ -264,10 +257,7 @@ void main() {
         skip: 3,
         expect: () => [
           ApodListState(
-            items: fix
-                .fromRange(DateTimeRange(start: march(11), end: march(20)))
-                .reversed
-                .toList(),
+            items: fix.fromRange(from11to20range).reversed.toList(),
             isLoading: true,
             error: null,
             query: 'galaxy',
@@ -275,10 +265,7 @@ void main() {
             infiniteScrollLastDay: march(11),
           ),
           ApodListState(
-            items: fix
-                .fromRange(DateTimeRange(start: march(1), end: march(20)))
-                .reversed
-                .toList(),
+            items: fix.fromRange(from01to20range).reversed.toList(),
             isLoading: false,
             error: null,
             query: 'galaxy',
@@ -331,7 +318,7 @@ void main() {
           () async {
             await bloc.loadMore();
             await bloc.filter(from03to07range);
-            await bloc.filter(DateTimeRange(start: march(12), end: march(15)));
+            await bloc.filter(from12to15range);
           },
         ),
         skip: 4,
@@ -341,18 +328,15 @@ void main() {
             isLoading: true,
             error: null,
             query: '',
-            dateRange: DateTimeRange(start: march(12), end: march(15)),
+            dateRange: from12to15range,
             infiniteScrollLastDay: null,
           ),
           ApodListState(
-            items: fix
-                .fromRange(DateTimeRange(start: march(12), end: march(15)))
-                .reversed
-                .toList(),
+            items: fix.fromRange(from12to15range).reversed.toList(),
             isLoading: false,
             error: null,
             query: '',
-            dateRange: DateTimeRange(start: march(12), end: march(15)),
+            dateRange: from12to15range,
             infiniteScrollLastDay: null,
           ),
         ],
@@ -444,15 +428,11 @@ void main() {
         'emits [loadingEmpty, results, loadingEmptyWithDates, resultsWithDates, resultsWithDatesWithQuery] '
         '(shows empty list if there are no corresponding results)',
         build: () => ApodListCubit(repository),
-        setUp: () => customRange = DateTimeRange(
-          start: march(1),
-          end: march(5),
-        ),
         act: (bloc) => withClock(
           Clock.fixed(march(30)),
           () async {
             await bloc.loadMore();
-            await bloc.filter(customRange);
+            await bloc.filter(from01to05range);
             bloc.search('galaxy');
           },
         ),
@@ -462,11 +442,11 @@ void main() {
         },
         expect: () => [
           ApodListState(
-            items: fix.fromRange(customRange).reversed.toList(),
+            items: fix.fromRange(from01to05range).reversed.toList(),
             isLoading: false,
             error: null,
             query: 'galaxy',
-            dateRange: customRange,
+            dateRange: from01to05range,
             infiniteScrollLastDay: null,
           ),
         ],
@@ -517,16 +497,12 @@ void main() {
         'emits [loadingEmpty, results, resultsWithQuery, loadingEmptyWithDatesWithQuery, resultsWithDatesWithQuery] '
         '(shows empty list if there are no corresponding results)',
         build: () => ApodListCubit(repository),
-        setUp: () => customRange = DateTimeRange(
-          start: march(1),
-          end: march(5),
-        ),
         act: (bloc) => withClock(
           Clock.fixed(march(30)),
           () async {
             await bloc.loadMore();
             bloc.search('galaxy');
-            await bloc.filter(customRange);
+            await bloc.filter(from01to05range);
           },
         ),
         skip: 3,
@@ -542,15 +518,15 @@ void main() {
             isLoading: true,
             error: null,
             query: 'galaxy',
-            dateRange: customRange,
+            dateRange: from01to05range,
             infiniteScrollLastDay: null,
           ),
           ApodListState(
-            items: fix.fromRange(customRange).reversed.toList(),
+            items: fix.fromRange(from01to05range).reversed.toList(),
             isLoading: false,
             error: null,
             query: 'galaxy',
-            dateRange: customRange,
+            dateRange: from01to05range,
             infiniteScrollLastDay: null,
           ),
         ],
