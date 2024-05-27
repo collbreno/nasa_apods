@@ -15,7 +15,10 @@ class ApodMediaWidget extends StatelessWidget {
         placeholder: (context, url) => Container(
           color: Colors.grey,
         ),
-        errorWidget: (context, url, error) => const Icon(Icons.error),
+        errorWidget: (context, url, error) => Container(
+          color: Colors.grey,
+          child: const Icon(Icons.error),
+        ),
       ),
     );
   }

@@ -54,28 +54,36 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildDateRangeHeader(DateTimeRange dateRange) {
-    return Container(
-      color: Colors.purple,
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              '${dateRange.start.formatForUser()} '
-              '- ${dateRange.end.formatForUser()}',
-              textAlign: TextAlign.center,
+    return Builder(builder: (context) {
+      return Container(
+        color: Theme.of(context).colorScheme.primary,
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                '${dateRange.start.formatForUser()} '
+                '- ${dateRange.end.formatForUser()}',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
             ),
-          ),
-          Builder(builder: (context) {
-            return IconButton(
-              onPressed: () {
-                context.read<ApodListCubit>().loadMore();
-              },
-              icon: const Icon(Icons.close),
-            );
-          }),
-        ],
-      ),
-    );
+            Builder(builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  context.read<ApodListCubit>().loadMore();
+                },
+                icon: Icon(
+                  Icons.close,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              );
+            }),
+          ],
+        ),
+      );
+    });
   }
 
   Widget _buildContent(ApodListState state) {

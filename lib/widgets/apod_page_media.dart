@@ -49,20 +49,26 @@ class ApodPageMedia extends StatelessWidget {
   }
 
   Widget _buildVideo() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        ApodMediaWidget(imgUrl: (apod as NasaVideo).thumbUrl),
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(100),
+    return Builder(
+      builder: (context) => Stack(
+        alignment: Alignment.center,
+        children: [
+          ApodMediaWidget(imgUrl: (apod as NasaVideo).thumbUrl),
+          Container(
+            width: 48,
+            height: 48,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.background,
+              borderRadius: BorderRadius.circular(100),
+            ),
+            child: Icon(
+              Icons.play_arrow,
+              size: 36,
+              color: Theme.of(context).colorScheme.onBackground,
+            ),
           ),
-          child: const Icon(Icons.play_arrow, size: 36),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

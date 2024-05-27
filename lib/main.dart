@@ -41,13 +41,16 @@ class App extends StatelessWidget {
     return RepositoryProvider<IAppRepository>(
       create: (context) => repository,
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'NASA APODS',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.deepPurple,
+            seedColor: Colors.blueAccent,
             brightness: Brightness.dark,
           ),
           useMaterial3: true,
+          // textTheme: TextTheme(
+          //   headlineLarge: TextStyle(),
+          // )
         ),
         home: const HomePage(),
       ),

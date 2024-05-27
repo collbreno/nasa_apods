@@ -29,8 +29,11 @@ class ApodListItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 _buildImage(),
+                const SizedBox(height: 16),
                 _buildTitle(),
+                const SizedBox(height: 16),
                 _buildDateAndMediaType(),
+                const SizedBox(height: 16),
               ],
             ),
           ),
@@ -41,7 +44,7 @@ class ApodListItem extends StatelessWidget {
 
   Widget _buildDateAndMediaType() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -53,17 +56,16 @@ class ApodListItem extends StatelessWidget {
   }
 
   Widget _buildTitle() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      child: Text(
-        apod.title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w600,
+    return Builder(builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Text(
+          apod.title,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _buildImage() {

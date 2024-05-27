@@ -14,43 +14,60 @@ class ApodPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(DateFormat.yMMMd().format(apod.date))),
       body: ListView(children: [
-        Hero(
-          tag: _getImageUrl(),
-          child: ApodPageMedia(apod),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-          child: Text(
-            apod.title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-          child: Text(
-            apod.explanation,
-            textAlign: TextAlign.justify,
-          ),
-        ),
-        if (apod.copyright != null)
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const Icon(Icons.copyright),
-                  const SizedBox(width: 4),
-                  Text(apod.copyright!),
-                ],
-              ),
-            ),
-          ),
+        _buildImage(),
+        const SizedBox(height: 24),
+        _buildTitle(),
+        const SizedBox(height: 16),
+        _buildExplanation(),
+        const SizedBox(height: 16),
+        if (apod.copyright != null) _buildCopyright(),
       ]),
+    );
+  }
+
+  Widget _buildCopyright() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Center(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.copyright),
+            const SizedBox(width: 4),
+            Text(apod.copyright!),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildExplanation() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12),
+      child: Text(
+        apod.explanation,
+        textAlign: TextAlign.justify,
+      ),
+    );
+  }
+
+  Widget _buildTitle() {
+    return Builder(builder: (context) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Text(
+          apod.title,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+      );
+    });
+  }
+
+  Widget _buildImage() {
+    return Hero(
+      tag: _getImageUrl(),
+      child: ApodPageMedia(apod),
     );
   }
 
