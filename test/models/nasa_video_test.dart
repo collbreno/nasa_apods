@@ -5,7 +5,7 @@ import 'package:nasa_apod/models/nasa_video.dart';
 import '../test_utils/file_utils.dart';
 
 void main() {
-  test('nasa video with copyright', () async {
+  test('testing $NasaVideo fromJson constructor (with copyright)', () async {
     final json = await FileUtils.loadFile('video_example.json');
     final apod = NasaApod.fromJson(json);
 
@@ -21,7 +21,7 @@ void main() {
     expect(video.explanation, json['explanation']);
   });
 
-  test('nasa video without copyright', () async {
+  test('testing $NasaVideo fromJson constructor (without copyright)', () async {
     final json = await FileUtils.loadFile('video_no_copr_example.json');
     final video = NasaApod.fromJson(json);
 

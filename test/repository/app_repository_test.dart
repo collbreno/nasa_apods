@@ -22,7 +22,9 @@ void main() {
       repository = AppRepository(dioAdapter.dio);
     });
 
-    test('simple list', () async {
+    test(
+        'when mocked $Dio returns normally, '
+        '$AppRepository returns successfully', () async {
       final json = await FileUtils.loadFile(
         'apod_list_example.json',
       );
@@ -45,7 +47,9 @@ void main() {
       expect(result[3], isA<NasaVideo>());
     });
 
-    test('invalid date range', () async {
+    test(
+        'when mocked $Dio returns invalid date range, '
+        '$AppRepository throws $ApiException', () async {
       final json = await FileUtils.loadFile(
         'apod_list_invalid_date_range.json',
       );
@@ -72,7 +76,9 @@ void main() {
       repository = AppRepository(dio);
     });
 
-    test('simple list', () async {
+    test(
+        'when real $Dio returns normally, '
+        '$AppRepository returns successfully', () async {
       final list = await repository.getApods(
         DateTimeRange(
           start: DateTime(2024, 5, 10),
@@ -91,7 +97,9 @@ void main() {
           ]));
     });
 
-    test('invalid date range', () async {
+    test(
+        'when real $Dio returns invalid date range, '
+        '$AppRepository throws $ApiException', () async {
       expect(
         () async => await repository.getApods(
           DateTimeRange(

@@ -13,7 +13,7 @@ void main() {
       fix = await ApodListFixture.loadFromMarch();
     });
 
-    test('testing fromRange method', () async {
+    test('testing fixture fromRange(range) method', () async {
       final wholeMonth = fix.fromRange(
         DateTimeRange(start: DateTime(2024, 3, 1), end: DateTime(2024, 3, 31)),
       );
@@ -43,7 +43,7 @@ void main() {
       expect(oneDay.single.date, DateTime(2024, 3, 15));
     });
 
-    test('testing fromDate method', () async {
+    test('testing fixture fromDate(date) method', () async {
       expect(fix.apods, hasLength(31));
 
       final apods =

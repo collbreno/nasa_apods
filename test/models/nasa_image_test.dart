@@ -5,7 +5,7 @@ import 'package:nasa_apod/models/nasa_image.dart';
 import '../test_utils/file_utils.dart';
 
 void main() {
-  test('nasa image with copyright', () async {
+  test('testing $NasaImage constructor (with copyright)', () async {
     final json = await FileUtils.loadFile('image_example.json');
     final image = NasaApod.fromJson(json);
 
@@ -13,7 +13,7 @@ void main() {
     expect(image.copyright, isNotNull);
   });
 
-  test('nasa image without copyright', () async {
+  test('testing $NasaImage constructor (with copyright)', () async {
     final json = await FileUtils.loadFile('image_no_copr_example.json');
     final image = NasaApod.fromJson(json);
 
