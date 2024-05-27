@@ -7,17 +7,24 @@ class ApodMediaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 16 / 9,
-      child: CachedNetworkImage(
-        imageUrl: imgUrl,
-        fit: BoxFit.cover,
-        placeholder: (context, url) => Container(
-          color: Colors.grey,
+    return Center(
+      child: Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height / 2,
         ),
-        errorWidget: (context, url, error) => Container(
-          color: Colors.grey,
-          child: const Icon(Icons.error),
+        child: AspectRatio(
+          aspectRatio: 16 / 9,
+          child: CachedNetworkImage(
+            imageUrl: imgUrl,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => Container(
+              color: Colors.grey,
+            ),
+            errorWidget: (context, url, error) => Container(
+              color: Colors.grey,
+              child: const Icon(Icons.error),
+            ),
+          ),
         ),
       ),
     );

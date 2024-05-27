@@ -12,29 +12,36 @@ class ApodListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => ApodPage(apod),
-          ),
-        );
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        child: Card(
-          clipBehavior: Clip.antiAlias,
-          child: Material(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildImage(),
-                const SizedBox(height: 16),
-                _buildTitle(),
-                const SizedBox(height: 16),
-                _buildDateAndMediaType(),
-                const SizedBox(height: 16),
-              ],
+    return Center(
+      child: Container(
+        constraints: MediaQuery.of(context).orientation == Orientation.portrait
+            ? null
+            : const BoxConstraints(maxWidth: 540),
+        child: GestureDetector(
+          onTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ApodPage(apod),
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Card(
+              clipBehavior: Clip.antiAlias,
+              child: Material(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _buildImage(),
+                    const SizedBox(height: 16),
+                    _buildTitle(),
+                    const SizedBox(height: 16),
+                    _buildDateAndMediaType(),
+                    const SizedBox(height: 16),
+                  ],
+                ),
+              ),
             ),
           ),
         ),
