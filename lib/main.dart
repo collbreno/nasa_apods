@@ -48,9 +48,6 @@ class App extends StatelessWidget {
             brightness: Brightness.dark,
           ),
           useMaterial3: true,
-          // textTheme: TextTheme(
-          //   headlineLarge: TextStyle(),
-          // )
         ),
         home: const HomePage(),
       ),
